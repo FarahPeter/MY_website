@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Resume</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            padding-top: 50px;
+        }
+        .section-title {
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+        .login-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{% url 'admin:login' %}" class="btn btn-primary login-btn">Admin Login</a>
+        <h1 class="text-center">My Resume</h1>
+
+        <!-- Image and Name -->
+        <section>
+            <h2 class="section-title">Image and Name</h2>
+            <div class="text-center">
+                {% if image_name %}
+                    <img src="{{ image_name.image.url }}" class="rounded-circle" alt="{{ image_name.name }}" width="150">
+                    <h3>{{ image_name.name }}</h3>
+                {% else %}
+                    <p>No image and name uploaded yet.</p>
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- Links -->
+        <section>
+            <h2 class="section-title">Links</h2>
+            <div class="list-group">
+                {% for link in links %}
+                    <a href="{{ link.url }}" class="list-group-item list-group-item-action" target="_blank">{{ link.link_type }}</a>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- About -->
+        <section>
+            <h2 class="section-title">About</h2>
+            <div class="card">
+                <div class="card-body">
+                    {% if about %}
+                        <p>{{ about.content }}</p>
+                    {% else %}
+                        <p>No about information uploaded yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+
+        <!-- Education -->
+        <section>
+            <h2 class="section-title">Education</h2>
+            {% for edu in education %}
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ edu.institution }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ edu.degree }} ({{ edu.start_date }} - {% if edu.end_date %}{{ edu.end_date }}{% else %}Present{% endif %})</h6>
+                        {% if edu.supporting_files %}
+                            <a href="{{ edu.supporting_files.url }}" class="card-link" target="_blank">Supporting File</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </section>
+
+        <!-- Experience -->
+        <section>
+            <h2 class="section-title">Experience</h2>
+            {% for exp in experience %}
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ exp.job_title }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ exp.company }} ({{ exp.start_date }} - {% if exp.end_date %}{{ exp.end_date }}{% else %}Present{% endif %})</h6>
+                        {% if exp.supporting_files %}
+                            <a href="{{ exp.supporting_files.url }}" class="card-link" target="_blank">Supporting File</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </section>
+
+        <!-- Projects -->
+        <section>
+            <h2 class="section-title">Projects</h2>
+            {% for proj in projects %}
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ proj.title }}</h5>
+                        <p class="card-text">{{ proj.description }}</p>
+                        {% if proj.supporting_files %}
+                            <a href="{{ proj.supporting_files.url }}" class="card-link" target="_blank">Supporting File</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </section>
+
+        <!-- Certificates and Tests -->
+        <section>
+            <h2 class="section-title">Certificates and Tests</h2>
+            {% for cert in certificates %}
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ cert.title }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ cert.issuing_organization }} ({{ cert.date_issued }})</h6>
+                        {% if cert.supporting_files %}
+                            <a href="{{ cert.supporting_files.url }}" class="card-link" target="_blank">Supporting File</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </section>
+
+        <!-- Skills -->
+        <section>
+            <h2 class="section-title">Skills</h2>
+            <ul class="list-group">
+                {% for skill in skills %}
+                    <li class="list-group-item">{{ skill.name }}{% if skill.level %} ({{ skill.level }}){% endif %}</li>
+                {% endfor %}
+            </ul>
+        </section>
+    </div>
+</body>
+</html>
